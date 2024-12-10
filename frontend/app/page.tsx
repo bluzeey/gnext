@@ -1,101 +1,85 @@
+"use client";
+import Head from "next/head";
 import Image from "next/image";
-
+import { useRouter } from "next/navigation";
+import Avatar from "../components/Avatar";
+import Footer from "../components/Footer";
+import { useRef } from "react";
+import { X, Mic2, Search } from "lucide-react";
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const searchInputRef = useRef(null);
+  const router = useRouter();
+  const search = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const term = searchInputRef.current?.value;
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    if (!term) return;
+
+    router.push(`/search?term=${term}`);
+  };
+  return (
+    <div className="flex flex-col items-center justify-center h-screen">
+      <Head>
+        <title>Google</title>
+        <link rel="icon" href="/images/favicon.ico" />
+      </Head>
+      <header className="flex w-full p-5 justify-between text-sm text-gray-700">
+        <div className="flex space-x-4 items-center">
+          <p className="link">About</p>
+          <p className="link">Store</p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+        <div className="flex space-x-4 items-center">
+          <p className="link">Gmail</p>
+          <p className="link">Images</p>
+          <X className="h-8 w-8 p-1 rounded-full hover:bg-gray-100 cursor-pointer" />
+          <Avatar url="/images/myFace.jpeg" />
+        </div>
+      </header>
+      <form className="flex flex-col items-center justify-center flex-grow w-full h-full">
+        <Image
+          src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
+          height={100}
+          width={300}
+          alt="Google Logo"
+        />
+        <div
+          className="flex w-full mt-5
+          hover:shadow-lg focus-within:shadow-lg max-w-md rounded-full border border-gray-200 px-5 py-3 items-center
+          sm:max-w-xl lg:max-w-2xl"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+          <Search className="h-5 mr-3 text-gray-500" />
+          <input
+            ref={searchInputRef}
+            type="text"
+            className="flex-grow focus:outline-none"
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
+          <Mic2 className="h-5" />
+        </div>
+
+        <div
+          className="flex flex-col w-1/2 space-y-2 justify-center
+           mt-8 sm:space-y-0 sm:flex-row sm:space-x-4"
         >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+          <button
+            className="btn"
+            onClick={() =>
+              search(new Event("click") as React.FormEvent<HTMLFormElement>)
+            }
+          >
+            Google Search
+          </button>
+          <button
+            className="btn"
+            onClick={(e) => {
+              e.preventDefault();
+              search();
+            }}
+          >
+            I&apos;m Feeling Lucky
+          </button>
+        </div>
+      </form>
+      <Footer />
     </div>
   );
 }

@@ -1,16 +1,21 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Avatar from "../components/Avatar";
 import Footer from "../components/Footer";
 import { X, Mic2, Search } from "lucide-react";
+import { ListeningModal } from "@/components/ListeningModal";
+import UploadImageComponent from "@/components/UploadImage"; // Import the new component
 
 export default function Home() {
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
+  const [isListening, setListening] = useState(false);
+  const [isUploadComponentVisible, setUploadComponentVisible] = useState(false); // Add state for the upload component
+  const [recognizedText, setRecognizedText] = useState<string>("");
 
   const search = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -19,6 +24,23 @@ export default function Home() {
     if (!term) return;
 
     router.push(`/search?term=${term}`);
+  };
+
+  const startListening = () => {
+    setListening(true); // Set listening state to true
+  };
+
+  const stopListening = (text: string) => {
+    setListening(false); // Set listening state to false
+    if (text) {
+      setRecognizedText(text); // Save recognized text
+      router.push(`/search?term=${text}`); // Redirect to search with recognized text
+    }
+  };
+
+  // Function to toggle the visibility of the upload component
+  const toggleUploadComponent = () => {
+    setUploadComponentVisible((prev) => !prev);
   };
 
   return (
@@ -57,10 +79,11 @@ export default function Home() {
             className="flex-grow focus:outline-none"
           />
           <svg
-            className="goxjub h-5 mr-3"
+            className="h-5 mr-3 cursor-pointer"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
+            onClick={startListening} // Open modal on search icon click
           >
             <path
               fill="#4285f4"
@@ -77,10 +100,11 @@ export default function Home() {
             />
           </svg>
           <svg
-            className="Gdd5U h-5"
+            className=" h-5"
             focusable="false"
             viewBox="0 0 192 192"
             xmlns="http://www.w3.org/2000/svg"
+            onClick={toggleUploadComponent}
           >
             <rect fill="none" height="192" width="192" />
             <g>
@@ -119,6 +143,11 @@ export default function Home() {
         </div>
       </form>
       <Footer />
+      <ListeningModal isListening={isListening} onClose={stopListening} />
+      {isUploadComponentVisible && (
+        <UploadImageComponent onClose={toggleUploadComponent} />
+      )}{" "}
+      {/* Show upload component */}
     </div>
   );
 }

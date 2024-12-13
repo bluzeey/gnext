@@ -1,10 +1,111 @@
 import os
+import base64
 import aiofiles
 import asyncio
 import requests
-from bs4 import BeautifulSoup  # Import BeautifulSoup for HTML parsing
+from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urlencode
 from playwright.async_api import async_playwright
+from typing import List, Dict, Optional
+from fastapi import UploadFile
+
+
+def perform_google_custom_image_search(
+    api_key: str, 
+    search_engine_id: str, 
+    file_path: str, 
+    max_results: int = 10
+) -> List[Dict[str, str]]:
+    """
+    Perform reverse image search using Google Custom Search API
+    
+    :param api_key: Google Custom Search API key
+    :param search_engine_id: Google Custom Search Engine ID
+    :param file_path: Path to the uploaded image file
+    :param max_results: Maximum number of results to return
+    :return: List of image search results
+    """
+    try:
+        # Read image file and encode to base64
+        with open(file_path, 'rb') as image_file:
+            encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
+
+        # Prepare API request parameters
+        base_url = "https://www.googleapis.com/customsearch/v1"
+        params = {
+            'key': api_key,
+            'cx': search_engine_id,
+            'searchType': 'image',
+            'num': max_results,  # Number of results to return
+            'q': 'similar images'  # Generic query for similar images
+        }
+
+        # Make the API request
+        response = requests.get(base_url, params=params)
+        
+        # Check if request was successful
+        if response.status_code == 200:
+            results = response.json().get('items', [])
+            
+            # Process and return image results
+            processed_results = []
+            for idx, item in enumerate(results):
+                processed_results.append({
+                    'index': idx,
+                    'title': item.get('title', ''),
+                    'link': item.get('link', ''),
+                    'image_url': item.get('image', {}).get('thumbnailLink', ''),
+                    'source': item.get('displayLink', '')
+                })
+            
+            return processed_results
+        else:
+            raise Exception(f"API request failed: {response.status_code} - {response.text}")
+    
+    except Exception as e:
+        print(f"Error in reverse image search: {e}")
+        raise
+
+async def reverse_image_search_with_custom_api(
+    file: UploadFile, 
+    api_key: str, 
+    search_engine_id: str, 
+    max_results: int = 10
+) -> Dict:
+    """
+    Async method to handle reverse image search using Custom Search API
+    
+    :param file: Uploaded file
+    :param api_key: Google Custom Search API key
+    :param search_engine_id: Google Custom Search Engine ID
+    :param max_results: Maximum number of results to return
+    :return: Dictionary with search results
+    """
+    file_path = None
+    try:
+        # Save the uploaded image temporarily
+        file_path = await save_uploaded_image(file)
+
+        # Perform reverse image search
+        search_results = perform_google_custom_image_search(
+            api_key, 
+            search_engine_id, 
+            file_path, 
+            max_results
+        )
+
+        return {
+            "message": f"Successfully performed reverse image search for '{file.filename}'",
+            "total_results": len(search_results),
+            "results": search_results
+        }
+    except Exception as e:
+        print(f"Error in reverse image search: {e}")
+        raise
+    finally:
+        # Ensure temporary file is removed
+        if file_path:
+            await remove_uploaded_image(file_path)
 
 async def scroll_to_bottom(page):
     """Scroll to the bottom of the web page using Playwright."""

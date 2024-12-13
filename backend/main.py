@@ -1,10 +1,24 @@
 import os
 import asyncio
 from fastapi import FastAPI, HTTPException, File, UploadFile
-from pydantic import BaseModel
-from scraper import scrape_google_images, save_uploaded_image, remove_uploaded_image, upload_to_google_lens
+from pydantic import BaseModel, Field
+from typing import Optional, List, Dict
+from scraper import (
+    scrape_google_images, 
+    save_uploaded_image, 
+    remove_uploaded_image, 
+    upload_to_google_lens,
+    reverse_image_search_with_custom_api  # New import
+)
+from config import settings
 
-app = FastAPI()
+app = FastAPI(
+    title=settings.APP_NAME,
+    description="Advanced Image Search and Scraping API",
+    version="0.1.0",
+    debug=settings.DEBUG
+)
+
 
 class ImageSearchRequest(BaseModel):
     search_query: str
@@ -44,6 +58,44 @@ async def upload_image(file: UploadFile = File(...)):
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+    
+@app.post("/custom-reverse-search/", 
+          response_model=Dict, 
+          summary="Perform reverse image search using Custom Search API")
+async def custom_reverse_image_search(
+    file: UploadFile = File(...), 
+    max_results: int = 10
+):
+    """
+    Upload an image for reverse image search using Google Custom Search API.
+    
+    - Supports image file uploads
+    - Performs reverse image search 
+    - Returns list of similar images
+    """
+    # Validate file type
+    allowed_types = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    if file.content_type not in allowed_types:
+        raise HTTPException(
+            status_code=400, 
+            detail="Invalid file type. Only image files are allowed."
+        )
+
+    try:
+        # Perform reverse image search
+        search_results = await reverse_image_search_with_custom_api(
+            file, 
+            settings.GOOGLE_CUSTOM_SEARCH_API_KEY, 
+            settings.GOOGLE_SEARCH_ENGINE_ID,  
+            max_results
+        )
+
+        return search_results
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, 
+            detail=f"Reverse image search failed: {str(e)}"
+        )
 
 if __name__ == "__main__":
     import uvicorn

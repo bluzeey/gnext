@@ -49,21 +49,29 @@ export default function Home() {
         <title>Google</title>
         <link rel="icon" href="/images/favicon.ico" />
       </Head>
-      <header className="flex w-full p-5 justify-between text-sm text-gray-700">
+      <header className="flex w-full p-8 justify-between text-lg font-medium text-gray-900">
         <div className="flex space-x-4 items-center">
-          <p className="link">About</p>
-          <p className="link">Store</p>
+          <p className="text-lg mx-2">About</p>
+          <p className="text-lg mx-2">Store</p>
         </div>
         <div className="flex space-x-4 items-center">
-          <p className="link">Gmail</p>
-          <p className="link">Images</p>
-          <X className="h-8 w-8 p-1 rounded-full hover:bg-gray-100 cursor-pointer" />
-          <Avatar url="/images/myFace.jpeg" />
+          <p className="text-lg mx-2">Gmail</p>
+          <p className="text-lg mx-2">Images</p>
+          <X className="h-6 w-6 hover:bg-gray-100 rounded-full cursor-pointer" />
+          <div className="h-8 w-8 bg-gray-300 rounded-full overflow-hidden cursor-pointer">
+            <Image
+              src="/images/myFace.jpeg"
+              alt="Avatar"
+              width={64}
+              height={64}
+              className="h-full w-full object-cover"
+            />
+          </div>
         </div>
       </header>
       <form
         onSubmit={search}
-        className="flex flex-col items-center justify-center flex-grow w-full h-full"
+        className="flex flex-col items-center justify-center flex-grow w-full h-full mb-56"
       >
         <Image
           src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
@@ -71,7 +79,7 @@ export default function Home() {
           width={300}
           alt="Google Logo"
         />
-        <div className="flex w-full mt-5 hover:shadow-lg focus-within:shadow-lg max-w-md rounded-full border border-gray-200 px-5 py-3 items-center sm:max-w-xl lg:max-w-2xl">
+        <div className="flex w-full mt-5  shadow-lg max-w-md rounded-full border border-gray-200 px-5 py-4 items-center sm:max-w-xl lg:max-w-3xl">
           <Search className="h-4 w-4 text-gray-400 mr-3" />
           <input
             ref={searchInputRef}
@@ -79,7 +87,7 @@ export default function Home() {
             className="flex-grow focus:outline-none"
           />
           <svg
-            className="h-5 mr-3 cursor-pointer"
+            className="h-7 mr-5 cursor-pointer"
             focusable="false"
             viewBox="0 0 24 24"
             xmlns="http://www.w3.org/2000/svg"
@@ -100,7 +108,7 @@ export default function Home() {
             />
           </svg>
           <svg
-            className=" h-5"
+            className="h-7"
             focusable="false"
             viewBox="0 0 192 192"
             xmlns="http://www.w3.org/2000/svg"
@@ -125,18 +133,17 @@ export default function Home() {
             </g>
           </svg>
         </div>
-
-        <div className="flex flex-col items-center w-1/2 space-y-2 justify-center mt-4 sm:space-y-0 sm:flex-row sm:space-x-4">
+        <div className="flex flex-col items-center w-1/2 space-y-2 justify-center mt-8 sm:space-y-0 sm:flex-row sm:space-x-4">
           <button
             type="submit"
-            className="bg-[#f8f9fa] border border-[#f8f9fa] rounded-md text-[#3c4043] font-sans text-sm m-[11px_4px] px-4 py-0 leading-[27px] h-9 min-w-[54px] text-center cursor-pointer select-none"
+            className="bg-[#f8f9fa] border border-[#f8f9fa] rounded-md text-[#3c4043] text-lg m-[11px_4px] px-4 py-0 leading-[27px] h-12 min-w-[64px] text-center cursor-pointer select-none hover:border-gray-400 hover:shadow-md"
           >
             Google Search
           </button>
           <button
             type="button"
             onClick={search}
-            className="bg-[#f8f9fa] border border-[#f8f9fa] rounded-md text-[#3c4043] font-sans text-sm m-[11px_4px] px-4 py-0 leading-[27px] h-9 min-w-[54px] text-center cursor-pointer select-none"
+            className="bg-[#f8f9fa] border border-[#f8f9fa] rounded-md text-[#3c4043] text-lg m-[11px_4px] px-4  leading-[27px] h-12 min-w-[64px] text-center cursor-pointer select-none hover:border-gray-400 hover:shadow-md"
           >
             I&apos;m Feeling Lucky
           </button>

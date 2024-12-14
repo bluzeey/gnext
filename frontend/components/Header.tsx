@@ -22,13 +22,13 @@ function Header() {
 
   return (
     <>
-      <header className="sticky top-0 bg-white">
+      <header className="sticky top-0 bg-white shadow-lg">
         <div className="flex w-full p-6 items-center">
           <Image
             src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_272x92dp.png"
             alt="Google Logo"
-            height={40}
-            width={120}
+            height={140}
+            width={280}
             onClick={() => router.push("/")}
             className="cursor-pointer"
           />

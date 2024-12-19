@@ -17,6 +17,8 @@
     "next": "14.2.16",
     "openai": "^4.76.0",
     "react": "^18",
+    "react-crop-image": "^1.0.0",
+    "react-cropper": "^2.3.3",
     "react-dom": "^18",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7"

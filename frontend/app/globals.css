@@ -76,3 +76,94 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.cropper-line {
+  --b: 5px; /* thickness of the border */
+  --c: white; /* color of the border */
+  --w: 60px; /* width of border */
+
+  border: var(--b) solid #0000; /* space for the border */
+  --_g: #0000 90deg, var(--c) 0;
+  --_p: var(--w) var(--w) border-box no-repeat;
+  background: conic-gradient(
+        from 90deg at top var(--b) left var(--b),
+        var(--_g)
+      )
+      0 0 / var(--_p),
+    conic-gradient(from 180deg at top var(--b) right var(--b), var(--_g)) 100% 0 /
+      var(--_p),
+    conic-gradient(from 0deg at bottom var(--b) left var(--b), var(--_g)) 0 100% /
+      var(--_p),
+    conic-gradient(from -90deg at bottom var(--b) right var(--b), var(--_g))
+      100% 100% / var(--_p);
+  opacity: 1 !important;
+  background-color: transparent !important;
+}
+
+/* Customize the corners' size and color */
+.cropper-point {
+  background-color: white !important; /* Change corners' color */
+  width: 5px !important; /* Change corners' size */
+  height: 5px !important; /* Change corners' size */
+  border-radius: 50%; /* Make corners rounded */
+  opacity: 1 !important; /* Ensure full opacity */
+}
+
+.point-s {
+  opacity: 0 !important;
+}
+
+.point-n {
+  opacity: 0 !important;
+}
+
+.point-e {
+  opacity: 0 !important;
+}
+
+.point-w {
+  opacity: 0 !important;
+}
+
+.cropper-view-box {
+  display: block;
+  height: 100%;
+  outline: 1px solid transparent !important;
+  outline-color: rgba(51, 153, 255, 0.75);
+  overflow: hidden;
+  width: 100%;
+}
+
+.cropper-dashed.dashed-v {
+  border-left-width: 0px !important;
+  border-right-width: 0px !important;
+  height: 100%;
+  left: calc(100% / 3);
+  top: 0;
+  width: calc(100% / 3);
+}
+
+.cropper-dashed.dashed-h {
+  border-bottom-width: 0px !important;
+  border-top-width: 0px !important;
+  height: calc(100% / 3);
+  left: 0;
+  top: calc(100% / 3);
+  width: 100%;
+}
+
+.cropper-face {
+  background-color: transparent !important;
+  left: 0;
+  top: 0;
+}
+
+.cropper-center {
+  display: hidden !important;
+  height: 0;
+  left: 50%;
+  opacity: 0 !important;
+  position: absolute;
+  top: 50%;
+  width: 0;
+}

@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Search, Upload, MoreVertical } from "lucide-react";
+import Demo from "@/components/cropper/Demo";
 
 // Placeholder data for related products
 const relatedProducts = [
@@ -72,15 +73,9 @@ export default function LensPage() {
 
       <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <div className="bg-white p-4 rounded-lg shadow">
-            <div className="relative aspect-square">
-              <Image
-                src="/placeholder.svg?height=500&width=500"
-                alt="Main product image"
-                layout="fill"
-                objectFit="cover"
-                className="rounded-lg"
-              />
+          <div className="bg-black w-full h-full p-4 rounded-lg shadow">
+            <div className="relative ">
+              <Demo />
             </div>
             <div className="mt-4 flex justify-between items-center">
               <Button variant="outline" className="flex items-center">
